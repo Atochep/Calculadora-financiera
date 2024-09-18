@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Financiamiento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .contenedor {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            height: 60px;
+            margin-right: 20px;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .resultados {
+            margin-top: 20px;
+        }
+
+        .resultado {
+            background-color: #e0f7fa; /* Azul claro */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .resultado .titulo {
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .resultado .valor {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+        <!-- Encabezado con logo y título -->
+        <div class="header">
+            <img src="imagenes/logo.png" alt="Logo de la calculadora">
+            <h2>Calculadora de Financiamiento</h2>
+        </div>
+
+        <!-- Formulario de entrada -->
+        <label for="precioTotal">Precio Total (en soles):</label>
+        <input type="number" id="precioTotal" placeholder="Ingresa el precio total">
+
+        <label for="deposito">Depósito Pagado Hoy (en soles):</label>
+        <input type="number" id="deposito" placeholder="Ingresa el depósito inicial">
+
+        <label for="cuotas">Número de Cuotas Mensuales:</label>
+        <input type="number" id="cuotas" placeholder="Ingresa el número de cuotas">
+
+        <button onclick="calcularFinanciamiento()">Calcular</button>
+
+        <!-- Resultados -->
+        <div class="resultados">
+            <div class="resultado">
+                <p class="titulo">Precio de Compra:</p>
+                <p class="valor" id="resultadoCompra">-</p>
+            </div>
+            <div class="resultado">
+                <p class="titulo">IGV:</p>
+                <p class="valor" id="resultadoIGV">-</p>
+            </div>
+            <div class="resultado">
+                <p class="titulo">Saldo a Financiar:</p>
+                <p class="valor" id="resultadoSaldo">-</p>
+            </div>
+            <div class="resultado">
+                <p class="titulo">Pago Mínimo Mensual con Intereses:</p>
+                <p class="valor" id="resultadoPagoInteres">-</p>
+            </div>
+            <div class="resultado">
+                <p class="titulo">Interés Mensual:</p>
+                <p class="valor" id="resultadoInteresMensual">-</p>
+            </div>
+            <div class="resultado">
+                <p class="titulo">Interés Diario:</p>
+                <p class="valor" id="resultadoInteresDiario">-</p>
+            </div>
+            <div class="resultado">
+                <p class="titulo">Total de Intereses:</p>
+                <p class="valor" id="resultadoTotalInteres">-</p>
+            </div>
+            <div class="resultado">
+                <p class="titulo">Total a Pagar:</p>
+                <p class="valor" id="resultadoTotalPagar">-</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calcularFinanciamiento() {
+            // Obtener los valores de los inputs
+            let precioTotal = parseFloat(document.getElementById('precioTotal').value);
+            let deposito = parseFloat(document.getElementById('deposito').value);
+            let cuotas = parseInt(document.getElementById('cuotas').value);
+
+            // Verificar que los valores sean válidos
+            if (isNaN(precioTotal) || isNaN(deposito) || isNaN(cuotas) || cuotas <= 0) {
+                alert("Por favor, ingresa valores válidos.");
+                return;
+            }
+
+            // Calcular el precio de compra (sin IGV)
+            let precioCompra = precioTotal / 1.18;
+
+            // Calcular el IGV
+            let igv = precioTotal - precioCompra;
+
+            // Calcular el saldo a financiar
+            let saldoFinanciar = precioTotal - deposito;
+
+            // Factores de interés por número de cuotas
+            const factores = {
+                2: 52.98 / 100,
+                3: 36.00 / 100,
+                4: 27.51 / 100,
+                5: 22.43 / 100,
+                6: 19.04 / 100,
+                7: 16.63 / 100,
+                8: 14.82 / 100,
+                9: 13.42 / 100,
+                10: 12.30 / 100,
+                11: 11.38 / 100,
+                12: 10.62 / 100,
+                13: 9.98 / 100,
+                14: 9.43 / 100,
+                15: 8.96 / 100,
+                16: 8.55 / 100,
+                17: 8.18 / 100,
+                18: 7.86 / 100,
+                19: 7.58 / 100
+            };
+
+            // Obtener el factor de interés según el número de cuotas
+            let factorInteres = factores[cuotas] || 0;
+
+            // Calcular el pago mínimo mensual con interés
+            let pagoMinimoMensual = saldoFinanciar * factorInteres;
+
+            // Calcular el pago mensual sin intereses
+            let pagoMensualSinIntereses = saldoFinanciar / cuotas;
+
+            // Calcular el total del interés
+            let totalInteres = pagoMinimoMensual * cuotas - saldoFinanciar;
+
+            // Calcular el interés mensual
+            let interesMensual = totalInteres / cuotas;
+
+            // Calcular el interés diario basado en el mes actual
+            const fechaActual = new Date();
+            const mesActual = fechaActual.getMonth(); // Mes actual (0 = enero, 11 = diciembre)
+            let diasDelMes;
+
+            switch (mesActual) {
+                case 0:  // Enero
+                case 2:  // Marzo
+                case 4:  // Mayo
+                case 6:  // Julio
+                case 7:  // Agosto
+                case 9:  // Octubre
+                case 11: // Diciembre
+                    diasDelMes = 31;
+                    break;
+                case 1:  // Febrero
+                    diasDelMes = 29;
+                    break;
+                case 3:  // Abril
+                case 5:  // Junio
+                case 8:  // Septiembre
+                case 10: // Noviembre
+                    diasDelMes = 30;
+                    break;
+            }
+
+            // Calcular el interés diario (según el número de días del mes actual)
+            let interesDiario = interesMensual / diasDelMes;
+
+            // Calcular el total a pagar (saldo a financiar + total de intereses)
+            let totalPagar = saldoFinanciar + totalInteres;
+
+            // Mostrar los resultados en la página
+            document.getElementById('resultadoCompra').innerText = `${precioCompra.toFixed(2)} soles`;
+            document.getElementById('resultadoIGV').innerText = `${igv.toFixed(2)} soles`;
+            document.getElementById('resultadoSaldo').innerText = `${saldoFinanciar.toFixed(2)} soles`;
+            document.getElementById('resultadoPagoInteres').innerText = `${pagoMinimoMensual.toFixed(2)} soles`;
+            document.getElementById('resultadoInteresMensual').innerText = `${interesMensual.toFixed(2)} soles`;
+            document.getElementById('resultadoInteresDiario').innerText = `${interesDiario.toFixed(2)} soles`;
+            document.getElementById('resultadoTotalInteres').innerText = `${totalInteres.toFixed(2)} soles`;
+            document.getElementById('resultadoTotalPagar').innerText = `${totalPagar.toFixed(2)} soles`;
+        }
+    </script>
+
+</body>
+</html>
