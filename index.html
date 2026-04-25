@@ -6,23 +6,16 @@
 
 <style>
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #f3f3f3;
   padding: 20px;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 700px;
   margin: auto;
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  font-size: 28px;
+  padding: 20px;
 }
 
 table {
@@ -30,44 +23,24 @@ table {
   border-collapse: collapse;
 }
 
-td, th {
+td {
   border: 1px solid #999;
-  padding: 12px;
+  padding: 10px;
   text-align: center;
   font-size: 18px;
 }
 
-.header {
-  background: #d9ead3;
-  font-weight: bold;
-}
-
-.gray {
-  background: #e6e6e6;
-  font-weight: bold;
-}
-
-.red {
-  background: #f4cccc;
-  font-weight: bold;
-}
-
-.green {
-  background: #b6d7a8;
-  font-weight: bold;
-}
-
-/* ocultar por defecto */
-.oculto {
-  display: none;
-}
+.header { background: #d9ead3; font-weight: bold; }
+.gray { background: #e6e6e6; }
+.red { background: #f4cccc; font-weight: bold; }
+.green { background: #b6d7a8; font-weight: bold; }
 
 input {
   width: 100%;
-  padding: 10px;
-  border: none;
-  text-align: center;
+  padding: 8px;
   font-size: 18px;
+  text-align: center;
+  border: none;
 }
 
 button {
@@ -77,129 +50,106 @@ button {
   background: #2e7d32;
   color: white;
   border: none;
-  cursor: pointer;
-  font-weight: bold;
   font-size: 16px;
+  cursor: pointer;
 }
 
-button:hover {
-  background: #1b5e20;
-}
+button:hover { background: #1b5e20; }
+
+.oculto { display: none; }
 </style>
 </head>
 
 <body>
 
 <div class="container">
-<h2>CALCULADORA FINANCIERA</h2>
 
 <table>
-<tr class="header">
-  <td colspan="4">DATOS PRINCIPALES</td>
+<tr class="header"><td colspan="4">CALCULADORA</td></tr>
+
+<tr>
+<td>Precio Total</td>
+<td colspan="3"><input type="number" id="precio"></td>
 </tr>
 
 <tr>
-  <td>Precio Total</td>
-  <td colspan="3"><input type="number" id="precioTotal"></td>
+<td>Depósito</td>
+<td colspan="3"><input type="number" id="deposito"></td>
 </tr>
 
 <tr>
-  <td>Depósito</td>
-  <td colspan="3"><input type="number" id="deposito"></td>
-</tr>
-
-<tr>
-  <td>Cuotas (elige una)</td>
-  <td colspan="3"><input type="number" id="cuotas"></td>
+<td>Cuotas</td>
+<td colspan="3"><input type="number" id="cuotas"></td>
 </tr>
 
 <tr class="gray">
-  <td>Precio Compra</td>
-  <td id="precioCompra">-</td>
-  <td>IGV</td>
-  <td id="igv">-</td>
-</tr>
-
-<tr class="red">
-  <td>Saldo a Financiar</td>
-  <td colspan="3" id="saldo">-</td>
+<td>Saldo</td>
+<td colspan="3" id="saldo">-</td>
 </tr>
 </table>
 
 <button onclick="calcular()">CALCULAR</button>
-<button onclick="togglePorcentaje()">MOSTRAR / OCULTAR %</button>
+<button onclick="toggle()">MOSTRAR / OCULTAR %</button>
 
 <br><br>
 
-<table id="tablaCuotas">
-<tr class="header">
-  <td>CUOTA</td>
-  <td>MONTO</td>
-  <td class="colPorcentaje oculto">%</td>
-</tr>
-</table>
+<table id="resultado"></table>
 
 </div>
 
 <script>
+let verPorcentaje = false;
 
-let mostrarPorcentaje = false;
-
-function togglePorcentaje() {
-  mostrarPorcentaje = !mostrarPorcentaje;
-
-  document.querySelectorAll(".colPorcentaje").forEach(el => {
-    el.classList.toggle("oculto");
-  });
+function toggle(){
+  verPorcentaje = !verPorcentaje;
+  calcular(); // vuelve a renderizar
 }
 
-function calcular() {
+function calcular(){
 
-let precioTotal = parseFloat(document.getElementById('precioTotal').value);
-let deposito = parseFloat(document.getElementById('deposito').value);
-let cuotas = parseInt(document.getElementById('cuotas').value);
+let precio = parseFloat(document.getElementById("precio").value);
+let deposito = parseFloat(document.getElementById("deposito").value);
+let cuotas = parseInt(document.getElementById("cuotas").value);
 
-if (isNaN(precioTotal) || isNaN(deposito) || isNaN(cuotas) || cuotas <= 0) {
-  alert("Ingresa datos válidos");
+if(isNaN(precio) || isNaN(deposito) || isNaN(cuotas)){
+  alert("Completa los datos");
   return;
 }
 
-let precioCompra = precioTotal / 1.18;
-let igv = precioTotal - precioCompra;
-let saldo = precioTotal - deposito;
-
-document.getElementById("precioCompra").innerText = "S/. " + precioCompra.toFixed(2);
-document.getElementById("igv").innerText = "S/. " + igv.toFixed(2);
+let saldo = precio - deposito;
 document.getElementById("saldo").innerText = "S/. " + saldo.toFixed(2);
 
-/* FACTORES */
 const factores = {
-  2: 0.5298, 3: 0.36, 4: 0.2751, 5: 0.2243, 6: 0.1904,
-  7: 0.1663, 8: 0.1482, 9: 0.1342, 10: 0.123,
-  11: 0.1138, 12: 0.1062, 13: 0.0998, 14: 0.0943,
-  15: 0.0896, 16: 0.0855, 17: 0.0818, 18: 0.0786, 19: 0.0758
+  2:0.5298,3:0.36,4:0.2751,5:0.2243,6:0.1904,
+  7:0.1663,8:0.1482,9:0.1342,10:0.123,
+  11:0.1138,12:0.1062,13:0.0998,14:0.0943,
+  15:0.0896,16:0.0855,17:0.0818,18:0.0786,19:0.0758
 };
 
-let tabla = document.getElementById("tablaCuotas");
+let factor = factores[cuotas];
+if(!factor){
+  alert("Cuotas entre 2 y 19");
+  return;
+}
 
-/* SOLO UNA CUOTA */
-let factor = factores[cuotas] || 0;
 let monto = saldo * factor;
+let porcentaje = (factor*100).toFixed(2) + "%";
+
+let tabla = document.getElementById("resultado");
 
 tabla.innerHTML = `
 <tr class="header">
-  <td>CUOTA</td>
-  <td>MONTO</td>
-  <td class="colPorcentaje ${mostrarPorcentaje ? "" : "oculto"}">%</td>
+<td>CUOTAS</td>
+<td>MONTO</td>
+${verPorcentaje ? "<td>%</td>" : ""}
 </tr>
 
 <tr class="green">
-  <td>${cuotas} cuotas</td>
-  <td>S/. ${monto.toFixed(2)}</td>
-  <td class="colPorcentaje ${mostrarPorcentaje ? "" : "oculto"}">${(factor * 100).toFixed(2)}%</td>
+<td>${cuotas}</td>
+<td>S/. ${monto.toFixed(2)}</td>
+${verPorcentaje ? `<td>${porcentaje}</td>` : ""}
 </tr>
 `;
-
 }
 </script>
 
