@@ -6,16 +6,18 @@
 
 <style>
 body {
-  font-family: Arial;
-  background: #f3f3f3;
+  font-family: 'Segoe UI', sans-serif;
+  background: #eef2f7;
   padding: 20px;
 }
 
 .container {
   max-width: 700px;
   margin: auto;
-  background: white;
-  padding: 20px;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
 table {
@@ -24,37 +26,63 @@ table {
 }
 
 td {
-  border: 1px solid #999;
-  padding: 10px;
+  border: 1px solid #dcdcdc;
+  padding: 12px;
   text-align: center;
-  font-size: 18px;
+  font-size: 17px;
 }
 
-.header { background: #d9ead3; font-weight: bold; }
-.gray { background: #e6e6e6; }
-.red { background: #f4cccc; font-weight: bold; }
-.green { background: #b6d7a8; font-weight: bold; }
+/* COLORES PROFESIONALES */
+.header { background: #1f3c88; color: white; font-weight: bold; }
+.gray { background: #f1f3f6; }
+.red { background: #fdecea; color: #b71c1c; font-weight: bold; }
+.green { background: #e8f5e9; color: #1b5e20; font-weight: bold; }
 
 input {
   width: 100%;
-  padding: 8px;
-  font-size: 18px;
+  padding: 10px;
+  font-size: 16px;
   text-align: center;
-  border: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
-button {
+/* BOTÓN PRINCIPAL */
+.btn-calcular {
   width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  background: #2e7d32;
+  padding: 14px;
+  margin-top: 15px;
+  background: #1f3c88;
   color: white;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-button:hover { background: #1b5e20; }
+.btn-calcular:hover {
+  background: #162d66;
+}
+
+/* BOTÓN SECUNDARIO */
+.btn-toggle {
+  width: auto;
+  padding: 6px 12px;
+  margin-top: 8px;
+  background: #ccc;
+  color: #333;
+  border: none;
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  float: right;
+}
+
+.btn-toggle:hover {
+  background: #bbb;
+}
+
 </style>
 </head>
 
@@ -93,8 +121,8 @@ button:hover { background: #1b5e20; }
 </tr>
 </table>
 
-<button onclick="calcular()">CALCULAR</button>
-<button onclick="toggle()">MOSTRAR / OCULTAR %</button>
+<button class="btn-calcular" onclick="calcular()">CALCULAR</button>
+<button class="btn-toggle" onclick="toggle()">mostrar %</button>
 
 <br><br>
 
@@ -121,7 +149,6 @@ if(isNaN(precio) || isNaN(deposito) || isNaN(cuotas)){
   return;
 }
 
-/* CALCULOS */
 let precioCompra = precio / 1.18;
 let igv = precio - precioCompra;
 let saldo = precio - deposito;
@@ -130,7 +157,6 @@ document.getElementById("compra").innerText = "S/. " + precioCompra.toFixed(2);
 document.getElementById("igv").innerText = "S/. " + igv.toFixed(2);
 document.getElementById("saldo").innerText = "S/. " + saldo.toFixed(2);
 
-/* FACTORES */
 const factores = {
   2:0.5298,3:0.36,4:0.2751,5:0.2243,6:0.1904,
   7:0.1663,8:0.1482,9:0.1342,10:0.123,
@@ -147,7 +173,6 @@ if(!factor){
 let monto = saldo * factor;
 let porcentaje = (factor * 100).toFixed(2) + "%";
 
-/* RESULTADO */
 let tabla = document.getElementById("resultado");
 
 tabla.innerHTML = `
