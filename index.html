@@ -55,8 +55,6 @@ button {
 }
 
 button:hover { background: #1b5e20; }
-
-.oculto { display: none; }
 </style>
 </head>
 
@@ -65,7 +63,7 @@ button:hover { background: #1b5e20; }
 <div class="container">
 
 <table>
-<tr class="header"><td colspan="4">CALCULADORA</td></tr>
+<tr class="header"><td colspan="4">CALCULADORA FINANCIERA</td></tr>
 
 <tr>
 <td>Precio Total</td>
@@ -83,7 +81,14 @@ button:hover { background: #1b5e20; }
 </tr>
 
 <tr class="gray">
-<td>Saldo</td>
+<td>Precio Compra</td>
+<td id="compra">-</td>
+<td>IGV</td>
+<td id="igv">-</td>
+</tr>
+
+<tr class="red">
+<td>Saldo a Financiar</td>
 <td colspan="3" id="saldo">-</td>
 </tr>
 </table>
@@ -102,7 +107,7 @@ let verPorcentaje = false;
 
 function toggle(){
   verPorcentaje = !verPorcentaje;
-  calcular(); // vuelve a renderizar
+  calcular();
 }
 
 function calcular(){
@@ -116,9 +121,16 @@ if(isNaN(precio) || isNaN(deposito) || isNaN(cuotas)){
   return;
 }
 
+/* CALCULOS */
+let precioCompra = precio / 1.18;
+let igv = precio - precioCompra;
 let saldo = precio - deposito;
+
+document.getElementById("compra").innerText = "S/. " + precioCompra.toFixed(2);
+document.getElementById("igv").innerText = "S/. " + igv.toFixed(2);
 document.getElementById("saldo").innerText = "S/. " + saldo.toFixed(2);
 
+/* FACTORES */
 const factores = {
   2:0.5298,3:0.36,4:0.2751,5:0.2243,6:0.1904,
   7:0.1663,8:0.1482,9:0.1342,10:0.123,
@@ -133,8 +145,9 @@ if(!factor){
 }
 
 let monto = saldo * factor;
-let porcentaje = (factor*100).toFixed(2) + "%";
+let porcentaje = (factor * 100).toFixed(2) + "%";
 
+/* RESULTADO */
 let tabla = document.getElementById("resultado");
 
 tabla.innerHTML = `
