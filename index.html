@@ -2,24 +2,28 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calculadora Financiera</title>
 
 <style>
 body {
   font-family: 'Segoe UI', sans-serif;
   background: #eef2f7;
-  padding: 20px;
+  margin: 0;
+  padding: 10px;
 }
 
 .container {
-  max-width: 700px;
+  width: 100%;
+  max-width: 500px;
   margin: auto;
   background: #ffffff;
-  padding: 25px;
+  padding: 15px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
+/* TABLA */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -29,35 +33,36 @@ td {
   border: 1px solid #dcdcdc;
   padding: 12px;
   text-align: center;
-  font-size: 17px;
+  font-size: 18px;
 }
 
-/* COLORES PROFESIONALES */
-.header { background: #1f3c88; color: white; font-weight: bold; }
+/* COLORES */
+.header { background: #1f3c88; color: white; font-weight: bold; font-size: 20px; }
 .gray { background: #f1f3f6; }
 .red { background: #fdecea; color: #b71c1c; font-weight: bold; }
 .green { background: #e8f5e9; color: #1b5e20; font-weight: bold; }
 
+/* INPUTS */
 input {
   width: 100%;
-  padding: 10px;
-  font-size: 16px;
+  padding: 14px;
+  font-size: 18px;
   text-align: center;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
-/* BOTÓN PRINCIPAL */
+/* BOTONES */
 .btn-calcular {
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   margin-top: 15px;
   background: #1f3c88;
   color: white;
   border: none;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -65,24 +70,22 @@ input {
   background: #162d66;
 }
 
-/* BOTÓN SECUNDARIO */
 .btn-toggle {
-  width: auto;
-  padding: 6px 12px;
+  width: 100%;
+  padding: 10px;
   margin-top: 8px;
   background: #ccc;
   color: #333;
   border: none;
-  font-size: 12px;
-  border-radius: 6px;
+  font-size: 14px;
+  border-radius: 8px;
   cursor: pointer;
-  float: right;
 }
 
-.btn-toggle:hover {
-  background: #bbb;
+/* ESPACIADO */
+.spacer {
+  height: 15px;
 }
-
 </style>
 </head>
 
@@ -91,10 +94,10 @@ input {
 <div class="container">
 
 <table>
-<tr class="header"><td colspan="4">CALCULADORA FINANCIERA</td></tr>
+<tr class="header"><td colspan="4">CALCULADORA</td></tr>
 
 <tr>
-<td>Precio Total</td>
+<td>Precio</td>
 <td colspan="3"><input type="number" id="precio"></td>
 </tr>
 
@@ -109,22 +112,22 @@ input {
 </tr>
 
 <tr class="gray">
-<td>Precio Compra</td>
+<td>Compra</td>
 <td id="compra">-</td>
 <td>IGV</td>
 <td id="igv">-</td>
 </tr>
 
 <tr class="red">
-<td>Saldo a Financiar</td>
+<td>Saldo</td>
 <td colspan="3" id="saldo">-</td>
 </tr>
 </table>
 
 <button class="btn-calcular" onclick="calcular()">CALCULAR</button>
-<button class="btn-toggle" onclick="toggle()">mostrar %</button>
+<button class="btn-toggle" onclick="toggle()">Mostrar / Ocultar %</button>
 
-<br><br>
+<div class="spacer"></div>
 
 <table id="resultado"></table>
 
