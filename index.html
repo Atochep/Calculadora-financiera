@@ -61,6 +61,11 @@ td, th {
   font-weight: bold;
 }
 
+/* OCULTAR COLUMNA % */
+.oculto {
+  display: none;
+}
+
 /* INPUTS */
 input {
   width: 100%;
@@ -101,17 +106,17 @@ button:hover {
 
 <tr>
   <td>Precio Total</td>
-  <td colspan="3"><input type="number" id="precioTotal" placeholder="Ej: 6425"></td>
+  <td colspan="3"><input type="number" id="precioTotal" placeholder="Ej: 3000"></td>
 </tr>
 
 <tr>
   <td>Depósito</td>
-  <td colspan="3"><input type="number" id="deposito" placeholder="Ej: 500"></td>
+  <td colspan="3"><input type="number" id="deposito" placeholder="Ej: 150"></td>
 </tr>
 
 <tr>
   <td>Cuotas</td>
-  <td colspan="3"><input type="number" id="cuotas" placeholder="Ej: 6"></td>
+  <td colspan="3"><input type="number" id="cuotas" placeholder="Ej: 12"></td>
 </tr>
 
 <tr class="gray">
@@ -136,6 +141,7 @@ button:hover {
 <tr class="header">
   <td>CUOTAS</td>
   <td>MONTO</td>
+  <td class="oculto">%</td>
 </tr>
 </table>
 
@@ -175,6 +181,7 @@ tabla.innerHTML = `
 <tr class="header">
   <td>CUOTAS</td>
   <td>MONTO</td>
+  <td class="oculto">%</td>
 </tr>
 `;
 
@@ -188,6 +195,7 @@ for (let i = 2; i <= 19; i++) {
   <tr class="green">
     <td>${i} cuotas</td>
     <td>S/. ${monto.toFixed(2)}</td>
+    <td class="oculto">${(factor * 100).toFixed(2)}%</td>
   </tr>
   `;
 }
